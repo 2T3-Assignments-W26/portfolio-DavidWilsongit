@@ -1,0 +1,227 @@
+# My Projects
+
+## Programming 1 Project
+
+During programming 1 I created a very loosely inspired Pac-Man style game with other ways to win that wasn't just getting all the points on the map.
+
+#### Technologies used
+- Arrays
+- Functions
+- Other various basic things
+
+```csharp
+        static void map()
+            {
+                string[] tempmap =
+                {
+                "###################################################",
+                "D......#...............#....................#.....D",
+                "#..#####.#######..##...#....###.#######..##...#####",
+                "#........#.....#.......#....#...#.....#......##...#",
+                "########.####.######...#....######.#######.#.##...#",
+                "#.............#....#...######................#..###",
+                "###########......#...........................#....#",
+                "#.....#.K.##############.....##..###############..#",
+                "#.........#....#...#...#...#####..................#",
+                "#.#########....##..#...##########..#.#########....#",
+                "#..#......#.....#..................#......#.......#",
+                "##...#..#............#################....#.......#",
+                "#...#...###..####..###...P...###.....############.#",
+                "#...#.....#....#...............#.....#.K#...##....#",
+                "#...#.....#....#.....####_####.......#....#.......#",
+                "######################       ######################",
+            };
+                themap = new char[tempmap.Length][];
+                for (int i = 0; i < tempmap.Length; i++)
+                {
+                    themap[i] = tempmap[i].ToCharArray();
+                }
+        }
+```
+
+```csharp
+        static void Playerinput()
+        {
+            int oldX = playerX;
+            int oldY = playerY;
+            if (!Console.KeyAvailable)
+            {
+                return;
+            }
+            ConsoleKey key = Console.ReadKey(true).Key;
+            int newX = playerX;
+            int newY = playerY;
+            if (key == ConsoleKey.W)
+            {
+                newY--;
+            }
+            if (key == ConsoleKey.S)
+            {
+                newY++;
+            }
+            if (key == ConsoleKey.A)
+            {
+                newX--;
+            }
+            if (key == ConsoleKey.D)
+            {
+                newX++;
+            }
+            if (themap[newY][newX] == '_')
+            {
+                if (doorsopened == 2)
+                {
+                    youwinescape = true;
+                    gameover = false;
+                    Console.Clear();
+                    return;
+                }
+            }
+            if (themap[newY][newX] == '#')
+            {
+                Console.Clear();
+                gameover = false;
+                diestowall = true;
+            }
+            else
+            {
+                if (themap[newY][newX] == '.')
+                {
+                    score += 10;
+                }
+                if (themap[newY][newX] == 'K')
+                {
+                    keys++;
+                }
+                if (themap[newY][newX] != 'O' && themap[newY][newX] != '_' && themap[newY][newX] != 'D')
+                {
+                    playerX = newX;
+                    playerY = newY;
+                    themap[playerY][playerX] = 'P';
+                }
+                else
+                {
+                    oldX = playerX;
+                    oldY = playerY;
+                    playerX = playerspawnX;
+                    playerY = playerspawnY;
+                    themap[oldY][oldX] = ' ';
+                }
+                if (themap[newY][newX] == 'D')
+                {
+                    if (keys > 0)
+                    {
+                        keys--;
+                        themap[newY][newX] = 'O';
+                        doorsopened++;
+                    }
+                    else
+                    {
+                        playerX = playerspawnX;
+                        playerY = playerspawnY;
+                    }
+                }
+                if (score == 4370)
+                {
+                    gameover = false;
+                    youwinscore = true;
+                    Console.Clear();
+                }
+                if (themap[playerY][playerX] == '_')
+                {
+                    if (doorsopened == 2)
+                    {
+                        youwinescape = true;
+                        gameover = false;
+                        Console.Clear();
+                    }
+                }
+                themap[oldY][oldX] = ' ';
+                playermoves = true;
+            }
+        }   
+```
+
+![image](Pro1_Screenshot.png)
+
+#### What I learned
+During this assignment I learned to not go big with very little time, as I had more incomplete plans not in the project as if I didn't have it submitted that day I would lose another 10%, as I had tried to keep these ideas alive by submitting a day late. In the end, my game was complete, but felt empty and without a purpose.
+
+## Programming 2 Assignment 5
+
+In the 5th Programming 2 assignment, I had to make 2 classes, 1 for car, and 1 for employees, with methods, constuctors, and more.
+
+#### Technologies used
+
+- Classes
+- Different CS files
+- Lists
+
+```csharp
+    public class Employee
+    {
+        private uint _id;
+        private string _name;
+        private string _position;
+        private string _department;
+        public Employee()
+        {
+            _id = 0;
+            _name = string.Empty;
+            _position = string.Empty;
+            _department = string.Empty;
+        }
+        public Employee(string name, uint id) //Constructor 1
+        {
+            if (id < 10000 || id > 999999)
+            {
+                throw new ArgumentOutOfRangeException(nameof(id), "Your Id must be above 5 digits, and below 6 digits.");
+            }
+            if (HasDigit(name))
+            {
+                throw new ArgumentException("Name Cannot contain numbers");
+            }
+            _id = id;
+            _name = name;
+            _position = string.Empty;
+            _department = string.Empty;
+        }
+```
+```csharp
+public class Car
+{
+    uint _year;
+    string _make;
+    uint _speed;
+    uint _charge;
+    string _message;
+    public Car()
+    {
+        _year = 0;
+        _make = string.Empty;
+        _speed = 0;
+        _charge = 0;
+        _message = string.Empty;
+    }
+    public Car(uint modelyear, string make)
+    {
+        int currentyear = DateTime.Now.Year;
+        if (modelyear < 1888 || modelyear > currentyear + 1)
+        {
+            throw new ArgumentOutOfRangeException("The Models year must be between 1888 and the current year +1");
+        }
+        _year = modelyear;
+        _make = make;
+        _speed = 0;
+        _charge = 0;
+        _message = string.Empty;
+    }
+```
+
+![image](Pro2_Screenshot.png)
+
+#### What I learned
+In this assignment I deepened my understanding of all of the P2 topics that we learned over the semester.
+
+#### Link to repo
+[Repo](https://github.com/420-2P6-S02-W26/assignment-5-DavidWilsongit)
